@@ -1,4 +1,4 @@
-package graphds
+package adjacencyset
 
 import (
 	"reflect"
@@ -53,8 +53,8 @@ func TestAdjacencySetIndegree(t *testing.T) {
 			t.FailNow()
 		}
 	}
-
 }
+
 func TestAdjacencySetAdjacentVertices(t *testing.T) {
 	const (
 		size     = 4

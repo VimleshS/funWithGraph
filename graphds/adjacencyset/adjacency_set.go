@@ -1,4 +1,4 @@
-package graphds
+package adjacencyset
 
 import (
 	"github.com/VimleshS/funWithGraph/set"
