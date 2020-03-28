@@ -2,19 +2,19 @@ package set
 
 //Set go impl
 type Set struct {
-	store map[int]bool
+	store map[int]int
 }
 
 //NewSet ...
 func NewSet() *Set {
 	return &Set{
-		store: map[int]bool{},
+		store: map[int]int{},
 	}
 }
 
 //AddElement ...
-func (s *Set) AddElement(v int) {
-	s.store[v] = true
+func (s *Set) AddElement(v, weight int) {
+	s.store[v] = weight
 }
 
 //Elements ...
@@ -34,7 +34,14 @@ func (s *Set) Contain(v int) bool {
 	return false
 }
 
+func (s *Set) Weight(v int) int {
+	if w, ok := s.store[v]; ok {
+		return w
+	}
+	return -1
+}
+
 //Store a helper function to inspect store
-func (s *Set) Store() map[int]bool {
+func (s *Set) Store() map[int]int {
 	return s.store
 }

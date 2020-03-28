@@ -22,6 +22,9 @@ type AdjacencySet struct {
 	//Note: this defination is overkill it could simply be defined as
 	//store []*set.Set
 	directed bool
+
+	//to hold num of vertices
+	numVertices int
 }
 
 //NewAdjacencySet ...
@@ -32,7 +35,7 @@ func NewAdjacencySet(size int, directed bool) AdjacencySet {
 	// 	s[i] = set.NewSet()
 	// }
 
-	a := AdjacencySet{store: &s, directed: directed}
+	a := AdjacencySet{store: &s, directed: directed, numVertices: size}
 	for i := range *a.store {
 		(*a.store)[i] = set.NewSet()
 	}
@@ -40,19 +43,19 @@ func NewAdjacencySet(size int, directed bool) AdjacencySet {
 }
 
 //AddEdge ...
-func (g *AdjacencySet) AddEdge(v1, v2 int) {
+func (g *AdjacencySet) AddEdge(v1, v2, weight int) {
 	if v1 < 0 || v2 > len(*(g.store))-1 {
 		panic("wrong size")
 	}
-	(*g.store)[v1].AddElement(v2)
+	(*g.store)[v1].AddElement(v2, weight)
 
 	if g.directed == false {
-		(*g.store)[v2].AddElement(v1)
+		(*g.store)[v2].AddElement(v1, weight)
 	}
 }
 
 //Indegree ...
-func (g *AdjacencySet) Indegree(v int) []int {
+func (g *AdjacencySet) Indegree(v int) int {
 	if v < 0 || v > len(*(g.store))-1 {
 		panic("wrong size")
 	}
@@ -63,7 +66,7 @@ func (g *AdjacencySet) Indegree(v int) []int {
 		}
 	}
 
-	return t
+	return len(t)
 }
 
 //AdjacentVertices ...
@@ -77,10 +80,15 @@ func (g *AdjacencySet) AdjacentVertices(v int) []int {
 
 //EdgeWeight ...
 func (g *AdjacencySet) EdgeWeight(v1, v2 int) int {
-	return 1
+	return (*(g.store))[v1].Weight(v2)
 }
 
 //Store ...
 func (g *AdjacencySet) Store() []*set.Set {
 	return *g.store
+}
+
+//NumVertices ...
+func (g *AdjacencySet) NumVertices() int {
+	return g.numVertices
 }
