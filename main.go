@@ -3,10 +3,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/VimleshS/funWithGraph/graphds"
+	"github.com/VimleshS/funWithGraph/algorithm"
 	"github.com/VimleshS/funWithGraph/graphds/adjacencymatrix"
 	"github.com/VimleshS/funWithGraph/graphds/adjacencyset"
-	"github.com/VimleshS/funWithGraph/queue"
 )
 
 func main() {
@@ -23,7 +22,7 @@ func main() {
 	a.AddEdge(3, 4, 1)
 	a.AddEdge(6, 8, 1)
 
-	topologicalSortusingAdjacencySet(&a)
+	algorithm.TopologicalSortusingAdjacencySet(&a)
 
 	matrix := adjacencymatrix.NewAdjacencyMatrix(9, true)
 	matrix.AddEdge(0, 1, 1)
@@ -36,32 +35,23 @@ func main() {
 	matrix.AddEdge(3, 6, 1)
 	matrix.AddEdge(3, 4, 1)
 	matrix.AddEdge(6, 8, 1)
-	topologicalSortusingAdjacencySet(&matrix)
-}
+	algorithm.TopologicalSortusingAdjacencySet(&matrix)
 
-func topologicalSortusingAdjacencySet(a graphds.IGraph) {
-	topologicallySorted := []int{}
-	q := queue.Queue{}
+	//SPW
+	fmt.Println("SPUw")
+	spm := adjacencymatrix.NewAdjacencyMatrix(8, false)
+	spm.AddEdge(0, 1, 1)
+	spm.AddEdge(1, 2, 1)
+	spm.AddEdge(1, 3, 1)
+	spm.AddEdge(2, 3, 1)
+	spm.AddEdge(1, 4, 1)
+	spm.AddEdge(3, 5, 1)
+	spm.AddEdge(5, 4, 1)
+	spm.AddEdge(3, 6, 1)
+	spm.AddEdge(6, 7, 1)
+	spm.AddEdge(0, 7, 1)
+	algorithm.ShortestPathUnWeighted(&spm, 0, 5)
+	algorithm.ShortestPathUnWeighted(&spm, 0, 6)
+	algorithm.ShortestPathUnWeighted(&spm, 7, 4)
 
-	indegreeMap := map[int]int{}
-	for i := 0; i < a.NumVertices(); i++ {
-		indegreeMap[i] = a.Indegree(i)
-		if indegreeMap[i] == 0 {
-			q.Push(i)
-		}
-	}
-
-	for q.Len() > 0 {
-		v := q.Pop()
-		topologicallySorted = append(topologicallySorted, v)
-
-		for _, _v := range a.AdjacentVertices(v) {
-			indegreeMap[_v] = indegreeMap[_v] - 1
-			if indegreeMap[_v] == 0 {
-				q.Push(_v)
-			}
-		}
-	}
-	fmt.Println(topologicallySorted)
-	//[0 1 2 5 3 7 4 6 8]
 }
