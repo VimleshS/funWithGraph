@@ -1,4 +1,4 @@
-package algorithm
+package unweighted
 
 import (
 	"fmt"
@@ -8,10 +8,10 @@ import (
 	"github.com/VimleshS/funWithGraph/queue"
 )
 
-var dt distancetable.DistanceTable
+//var dt distancetable.DistanceTable
 
 func prepareDistanceTable(g graphds.IGraph, src, dst int) {
-	dt = distancetable.NewDistanceTable()
+	dt := distancetable.NewDistanceTable()
 	for i := 0; i < g.NumVertices(); i++ {
 		dt.NilDtUnit(i)
 	}
@@ -44,12 +44,17 @@ func backtrack(dt distancetable.DistanceTable, src, dst int) {
 		pN = dt.DTUnitValue(pN).PreNode()
 		r = append(r, pN)
 	}
-	//useless code to simulate stack,
-	_t := []int{}
-	for i := len(r) - 1; i >= 0; i-- {
-		_t = append(_t, r[i])
+
+	if dt.DTUnitValue(pN).Assigned() == false {
+		fmt.Println("There does not exist a valid path")
+	} else {
+		//useless code to simulate stack,
+		_t := []int{}
+		for i := len(r) - 1; i >= 0; i-- {
+			_t = append(_t, r[i])
+		}
+		fmt.Printf("Shorted path unweighted from %d to %d is %v \n", src, dst, _t)
 	}
-	fmt.Printf("Shorted path unweighted from %d to %d is %v \n", src, dst, _t)
 
 }
 
